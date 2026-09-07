@@ -1,0 +1,25 @@
+
+# Rust build artifacts.
+target/
+**/*.rs.bk
+
+# Foundry build artifacts, compiler cache, and local deployment output.
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Nix and direnv local state.
+.direnv/
+result
+result-*
+
+# Local environment files, deployment credentials and machine-local configuration.
+.envrc
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system metadata.
+.DS_Store
+.idea/
+.zed/

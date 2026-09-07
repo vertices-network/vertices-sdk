@@ -1,0 +1,9 @@
+[package]
+name = "vertices-base"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Minimal no_std Base transaction and registry ABI support"
+
+[dependencies]
+tiny-keccak.workspace = true

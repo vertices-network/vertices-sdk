@@ -1,0 +1,21 @@
+[workspace]
+members = [
+  "crates/vertices-core",
+  "crates/vertices-crypto",
+  "crates/vertices-base",
+  "crates/vertices-sim",
+  "crates/vertices-verify",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+repository = "https://github.com/vertices-network/rust-vertices-sdk"
+
+[workspace.dependencies]
+sha2 = { version = "0.10.9", default-features = false }
+tiny-keccak = { version = "2.0.2", features = ["keccak"] }
+ed25519-dalek = { version = "2.1.1", default-features = false }
+hex = "0.4.3"

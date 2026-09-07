@@ -1,0 +1,16 @@
+[package]
+name = "vertices-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Allocator-free deterministic observation envelopes for Vertices Network"
+
+[features]
+default = []
+std = []
+
+[dependencies]
+sha2.workspace = true
+
+[dev-dependencies]
+hex.workspace = true

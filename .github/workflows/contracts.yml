@@ -1,0 +1,69 @@
+name: Contracts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy_base_sepolia:
+        description: Deploy VerticesAttestationRegistry to Base Sepolia
+        required: true
+        default: false
+        type: boolean
+      initial_owner:
+        description: Optional registry owner address; defaults to the deployer wallet
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Run all checks in the pinned Nix environment
+        run: nix develop --command just check
+
+  deploy-base-sepolia:
+    name: Deploy Base Sepolia
+    needs: test
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      inputs.deploy_base_sepolia
+    runs-on: ubuntu-latest
+    environment: base-sepolia
+    env:
+      BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
+      DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+      INITIAL_OWNER: ${{ inputs.initial_owner }}
+      DEPLOYMENT_OUTPUT_PATH: deployment.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Deploy registry
+        run: nix develop --command scripts/deploy-base-sepolia.sh
+      - name: Publish deployment details
+        run: |
+          contract_address="$(jq -r '.deployedTo' deployment.json)"
+          transaction_hash="$(jq -r '.transactionHash' deployment.json)"
+          {
+            echo '## Base Sepolia deployment'
+            echo
+            echo "- Contract: \`$contract_address\`"
+            echo "- Transaction: \`$transaction_hash\`"
+            echo "- Explorer: https://sepolia.basescan.org/address/$contract_address"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "contract_address=$contract_address" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: base-sepolia-deployment
+          path: deployment.json

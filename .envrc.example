@@ -1,0 +1,4 @@
+use flake
+# export BASE_SEPOLIA_RPC_URL='https://…'
+# Never commit a private key. For a local deployment only:
+# export DEPLOYER_PRIVATE_KEY='0x…'

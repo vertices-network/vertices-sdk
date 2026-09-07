@@ -1,0 +1,11 @@
+[package]
+name = "vertices-verify"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Independent verifier for Vertices registry observations"
+
+[dependencies]
+ed25519-dalek.workspace = true
+hex.workspace = true
+vertices-core = { path = "../vertices-core" }

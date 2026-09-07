@@ -1,0 +1,11 @@
+[package]
+name = "vertices-sim"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Desktop reference device for Vertices"
+
+[dependencies]
+vertices-core = { path = "../vertices-core" }
+vertices-crypto = { path = "../vertices-crypto", features = ["software"] }
+hex.workspace = true
